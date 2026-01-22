@@ -1,267 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>R — build log</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>R — build log</title>
 
-<style>
-  :root {
-    --bg: #0b0e14;
-    --panel: #121622;
-    --border: #2a2f45;
-    --text: #cdd6f4;
-    --muted: #8b93b1;
-    --accent: #7aa2f7;
-    --accent-soft: rgba(122,162,247,0.15);
-    --success: #9ece6a;
-  }
+    <style>
+        :root {
+            --bg: #0b0e14;
+            --panel: #121622;
+            --border: #2a2f45;
+            --text: #cdd6f4;
+            --muted: #8b93b1;
+            --accent: #7aa2f7;
+            --accent-soft: rgba(122, 162, 247, 0.15);
+            --success: #9ece6a;
+        }
 
-  * {
-    box-sizing: border-box;
-  }
+        * {
+            box-sizing: border-box;
+        }
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background: radial-gradient(1200px 600px at 10% -10%, #11162a, transparent),
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(1200px 600px at 10% -10%, #11162a, transparent),
                 radial-gradient(800px 400px at 90% 10%, #0f1430, transparent),
                 var(--bg);
-    color: var(--text);
-    font-family: "Fira Code", Consolas, monospace;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
+            color: var(--text);
+            font-family: "Fira Code", Consolas, monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
 
-  /* === TERMINAL SHELL === */
-  .terminal {
-    width: 100%;
-    max-width: 720px;
-    background: linear-gradient(180deg, #121622, #0f1320);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,0.02),
-      0 30px 80px rgba(0,0,0,0.6);
-    overflow: hidden;
-  }
+        .terminal {
+            width: 100%;
+            max-width: 720px;
+            background: linear-gradient(180deg, #121622, #0f1320);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.02),
+                0 30px 80px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
 
-  /* === HEADER === */
-  .terminal-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(0,0,0,0.25);
-  }
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.25);
+        }
 
-  .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-  .dot.red { background: #f7768e; }
-  .dot.yellow { background: #e0af68; }
-  .dot.green { background: #9ece6a; }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
 
-  .title {
-    margin-left: auto;
-    font-size: 0.85rem;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
+        .dot.red {
+            background: #f7768e;
+        }
 
-  /* === CONTENT === */
-  .content {
-    padding: 18px;
-  }
+        .dot.yellow {
+            background: #e0af68;
+        }
 
-  .prompt {
-    color: var(--success);
-    margin-bottom: 14px;
-    font-size: 0.9rem;
-  }
+        .dot.green {
+            background: #9ece6a;
+        }
 
-  .prompt span {
-    color: var(--accent);
-  }
+        .title {
+            margin-left: auto;
+            font-size: 0.85rem;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+        }
 
-  /* === PROJECT LIST === */
-  .project {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    position: relative;
-  }
+        .content {
+            padding: 18px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
 
-  .project + .project {
-    margin-top: 10px;
-  }
+        .prompt {
+            color: var(--success);
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
 
-  .project:hover {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    transform: translateY(-1px);
-  }
+        .prompt span {
+            color: var(--accent);
+        }
 
-  .project::before {
-    content: ">";
-    color: var(--accent);
-    opacity: 0;
-    position: absolute;
-    left: 6px;
-    transition: opacity 0.2s;
-  }
+        .project {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
 
-  .project:hover::before {
-    opacity: 1;
-  }
+        .project+.project {
+            margin-top: 10px;
+        }
 
-  /* === KEYBOARD FOCUS (HACKER TOUCH) === */
-  .project:focus-visible {
-    outline: none;
-    background: var(--accent-soft);
-    border-color: var(--accent);
-  }
+        .project:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
 
-  .project:focus-visible::before {
-    opacity: 1;
-  }
+        .project::before {
+            content: ">";
+            color: var(--accent);
+            opacity: 0;
+            position: absolute;
+            left: 6px;
+            transition: opacity 0.2s;
+        }
 
-  .icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 8px;
-    object-fit: cover;
-    background: #000;
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-  }
+        .project:hover::before,
+        .project:focus-visible::before {
+            opacity: 1;
+        }
 
-  .info {
-    flex: 1;
-    min-width: 0;
-  }
+        .project:focus-visible {
+            outline: none;
+            background: var(--accent-soft);
+            border-color: var(--accent);
+        }
 
-  .name {
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+        .icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #000;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
 
-  .desc {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-top: 2px;
-    line-height: 1.4;
-  }
+        .info {
+            flex: 1;
+            min-width: 0;
+        }
 
-  .action {
-    font-size: 0.8rem;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 6px 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
+        .name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-  .project:hover .action {
-    background: var(--accent);
-    color: #0b0e14;
-  }
+        .desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
 
-  /* === FOOTER === */
-  .footer {
-    margin-top: 16px;
-    font-size: 0.75rem;
-    color: var(--muted);
-    opacity: 0.7;
-  }
+        .action {
+            font-size: 0.8rem;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
 
-  @media (max-width: 520px) {
-    .action {
-      display: none;
-    }
-  }
-</style>
+        .project:hover .action {
+            background: var(--accent);
+            color: #0b0e14;
+        }
+
+        .footer {
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 520px) {
+            .action {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="terminal">
-  <div class="terminal-header">
-    <div class="dot red"></div>
-    <div class="dot yellow"></div>
-    <div class="dot green"></div>
-    <div class="title">R@builds ~ projects</div>
-  </div>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div class="title">R@builds ~ projects</div>
+        </div>
 
-  <div class="content">
-    <div class="prompt">
-      <span>$</span> ls ./projects
+        <div class="content">
+            <div class="prompt"><span>$</span> ls ./projects</div>
+
+            <!-- NovaBot -->
+            <div class="project" tabindex="0"
+                onclick="openLink('https://docs.zeroauthority.xyz/nova-bot/getting-started')"
+                onkeydown="handleKey(event, 'https://docs.zeroauthority.xyz/nova-bot/getting-started')">
+                <img class="icon" src="https://nova.zeroauthoritydao.com/images/nova_logo.jpg" alt="NovaBot" />
+                <div class="info">
+                    <div class="name">NovaBot</div>
+                    <div class="desc">Discord / Telegram bot + AI agent for Stacks & Bitcoin</div>
+                </div>
+                <a class="action" href="https://docs.zeroauthority.xyz/nova-bot/getting-started" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <!-- !Punks -->
+            <div class="project" tabindex="0" onclick="openLink('https://magiceden.io/ordinals/marketplace/punks_')"
+                onkeydown="handleKey(event, 'https://magiceden.io/ordinals/marketplace/punks_')">
+                <img class="icon"
+                    src="https://img-cdn.magiceden.dev/rs:fill:400:0:0/plain/https%3A%2F%2Fcreator-hub-prod.s3.us-east-2.amazonaws.com%2Ford-_punks_pfp_1697039030447.png"
+                    alt="!Punks" />
+                <div class="info">
+                    <div class="name">!Punks</div>
+                    <div class="desc">Bitcoin inscribed NFT collection</div>
+                </div>
+                <a class="action" href="https://magiceden.io/ordinals/marketplace/punks_" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <!-- StreamPay -->
+            <div class="project" tabindex="0" onclick="openLink('https://github.com/Ghislo749/streampay')"
+                onkeydown="handleKey(event, 'https://github.com/Ghislo749/streampay')">
+                <img class="icon"
+                    src="https://cdn.dorahacks.io/static/files/19be35f425b43ba1df61aa94ea2973fc.png@128h.webp"
+                    alt="StreamPay" />
+                <div class="info">
+                    <div class="name">StreamPay</div>
+                    <div class="desc">Interval-based payment streaming on Bitcoin via Stacks.</div>
+                </div>
+                <a class="action" href="https://github.com/Ghislo749/streampay" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <!-- Not Incinerator -->
+            <div class="project" tabindex="0" onclick="openLink('https://burn.nothingtoken.xyz/')"
+                onkeydown="handleKey(event, 'https://burn.nothingtoken.xyz/')">
+                <img class="icon" src="https://avatars.githubusercontent.com/u/163468558?s=64&v=4"
+                    alt="Not Incinerator" />
+                <div class="info">
+                    <div class="name">Not Incinerator</div>
+                    <div class="desc">On-chain token burn alternative mechanism</div>
+                </div>
+                <a class="action" href="https://burn.nothingtoken.xyz/" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <div class="footer">// stable branch</div>
+        </div>
     </div>
 
-    <!-- PROJECTS -->
-    <div class="project"
-         tabindex="0"
-         onclick="openLink('https://docs.zeroauthority.xyz/nova-bot/getting-started')"
-         onkeydown="handleKey(event, 'https://docs.zeroauthority.xyz/nova-bot/getting-started')">
-      <img class="icon" src="https://nova.zeroauthoritydao.com/images/nova_logo.jpg" alt="NovaBot" />
-      <div class="info">
-        <div class="name">NovaBot</div>
-        <div class="desc">Discord / Telegram bot + AI agent for Stacks & Bitcoin</div>
-      </div>
-      <a class="action"
-         href="https://docs.zeroauthority.xyz/nova-bot/getting-started"
-         target="_blank"
-         onclick="event.stopPropagation()">open</a>
-    </div>
-
-    <div class="project"
-         tabindex="0"
-         onclick="openLink('https://magiceden.io/ordinals/marketplace/punks_')"
-         onkeydown="handleKey(event, 'https://magiceden.io/ordinals/marketplace/punks_')">
-      <img class="icon" src="https://img-cdn.magiceden.dev/rs:fill:400:0:0/plain/https%3A%2F%2Fcreator-hub-prod.s3.us-east-2.amazonaws.com%2Ford-_punks_pfp_1697039030447.png" alt="!Punks" />
-      <div class="info">
-        <div class="name">!Punks</div>
-        <div class="desc">Bitcoin inscribed NFT collection</div>
-      </div>
-      <a class="action"
-         href="https://magiceden.io/ordinals/marketplace/punks_"
-         target="_blank"
-         onclick="event.stopPropagation()">open</a>
-    </div>
-
-    <div class="footer">
-      // stable branch
-    </div>
-  </div>
-</div>
-
-<script>
-  function openLink(url) {
-    window.open(url, "_blank");
-  }
-
-  function handleKey(e, url) {
-    if (e.key === "Enter") {
-      openLink(url);
-    }
-  }
-</script>
+    <script>
+        function openLink(url) {
+            window.open(url, "_blank");
+        }
+        function handleKey(e, url) {
+            if (e.key === "Enter") openLink(url);
+        }
+    </script>
 
 </body>
+
 </html>
