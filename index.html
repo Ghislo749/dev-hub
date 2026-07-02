@@ -150,6 +150,27 @@
             flex-shrink: 0;
         }
 
+        .icon-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .action.soon {
+            color: #e0af68;
+            border-color: #e0af68;
+        }
+
+        .project:hover .action.soon {
+            background: #e0af68;
+            color: #0b0e14;
+        }
+
         .info {
             flex: 1;
             min-width: 0;
@@ -240,6 +261,31 @@
                 </div>
                 <a class="action" href="https://bestinslot.xyz/ordinals/collections/punks_" target="_blank"
                     onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <!-- MyAgents -->
+            <div class="project" tabindex="0" onclick="openLink('https://zadao.ai/agents/')"
+                onkeydown="handleKey(event, 'https://zadao.ai/agents/')">
+                <img class="icon" src="https://www.google.com/s2/favicons?domain=zadao.ai&amp;sz=128"
+                    alt="MyAgents" />
+                <div class="info">
+                    <div class="name">MyAgents</div>
+                    <div class="desc">ZaDAO AI agents platform</div>
+                </div>
+                <a class="action" href="https://zadao.ai/agents/" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <!-- Axis -->
+            <div class="project" tabindex="0" onclick="openLink('https://axis-inky-one.vercel.app/')"
+                onkeydown="handleKey(event, 'https://axis-inky-one.vercel.app/')">
+                <div class="icon icon-text">AX</div>
+                <div class="info">
+                    <div class="name">Axis</div>
+                    <div class="desc">Marketplace — coming soon</div>
+                </div>
+                <a class="action soon" href="https://axis-inky-one.vercel.app/" target="_blank"
+                    onclick="event.stopPropagation()">soon</a>
             </div>
 
             <div class="footer">// stable branch</div>
