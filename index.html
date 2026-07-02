@@ -204,6 +204,18 @@
             opacity: 0.7;
         }
 
+        .footer a {
+            color: var(--muted);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--muted);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         @media (max-width: 520px) {
             .action {
                 display: none;
@@ -265,6 +277,30 @@
                     onclick="event.stopPropagation()">open</a>
             </div>
 
+            <!-- Iskander -->
+            <div class="project" tabindex="0" onclick="openLink('https://github.com/Iskander-Agent/')"
+                onkeydown="handleKey(event, 'https://github.com/Iskander-Agent/')">
+                <img class="icon" src="https://github.com/Iskander-Agent.png" alt="Iskander" />
+                <div class="info">
+                    <div class="name">Iskander</div>
+                    <div class="desc">AI agent</div>
+                </div>
+                <a class="action" href="https://github.com/Iskander-Agent/" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
+            <!-- Clank -->
+            <div class="project" tabindex="0" onclick="openLink('https://github.com/ClankOS/')"
+                onkeydown="handleKey(event, 'https://github.com/ClankOS/')">
+                <img class="icon" src="https://github.com/ClankOS.png" alt="Clank" />
+                <div class="info">
+                    <div class="name">Clank</div>
+                    <div class="desc">AI agent</div>
+                </div>
+                <a class="action" href="https://github.com/ClankOS/" target="_blank"
+                    onclick="event.stopPropagation()">open</a>
+            </div>
+
             <!-- Axis -->
             <div class="project" tabindex="0" onclick="openLink('https://axis-inky-one.vercel.app/')"
                 onkeydown="handleKey(event, 'https://axis-inky-one.vercel.app/')">
@@ -279,7 +315,7 @@
                     onclick="event.stopPropagation()">soon</a>
             </div>
 
-            <div class="footer">// stable branch</div>
+            <div class="footer">// stable branch · <a href="https://github.com/Ghislo749/" target="_blank">gh:@Ghislo749</a></div>
         </div>
     </div>
 
